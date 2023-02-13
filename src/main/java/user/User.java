@@ -9,32 +9,35 @@ public class User {
         this.email = email;
     }
 
-    public String realUser(String login, String email) {
-        if (login != null &&  !login.isBlank()
-                && email != null &&  !email.isBlank()) {
-            login = "correct";
-            email = "correct";
+    public String createUser(String login, String email) {
+        if (login != null && email != null) {
+            login = "Ivan";
+            email = "xxx@mail.ru";
+        } else {
+            return "Data is not set";
+        }
+        return "'%s' '%s'".formatted(login, email);
+    }
+    public String correctUser(String login, String email) {
+        if (!login.isBlank()&&!login.isEmpty()
+                && !email.isBlank() &&  !email.isEmpty()) {
+            login = "Ivan";
+            email = "xxx@mail.ru";
         }else {
-            return "incorrect";}
-        return "User created '%s' '%s'!".formatted(login, email);}
+            return "Not created";}
+        return "'%s' '%s'".formatted(login, email);}
 
 
-    public String correctEmail(String email) {
-        if (email.contains("@") && email.contains(".")) {
-            email = "correct";
-        }else {
-            return "incorrect";}
-        return email;
+    public void correctEmail(String email) {
+        if (!email.contains("@") && !email.contains(".")) {
+            throw new IncorrectFillingException();
+        }
     }
 
-    public String loginEmail(String login, String email) {
+    public void loginEmail(String login, String email) {
         if (login.equals(email)) {
-            login = "incorrect";
-            email = "incorrect";
-        }else {
-            return "correct";
+            throw new IncorrectFillingException();
         }
-        return "User not created '%s' '%s'!".formatted(login, email);
     }
 
     public String getEmail() {

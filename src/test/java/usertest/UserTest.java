@@ -1,50 +1,56 @@
 package usertest;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
+import user.IncorrectFillingException;
 import user.User;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
 
 class UserTest {
-    private final User user = new User("Ivan", "xxx@mail.ru");
+    private User user;
 
+    @BeforeEach
+    void setUp() {
+        this.user = new User("null", "null");
+    }
 
-    //    Когда логин и адрес электронной почты переданы правильно, то объект user успешно создан
+    //    Когда логин и адрес электронной почты не переданы, то данные не установлены
     @Test
-    @DisplayName("When the login and e-mail are correctly passed, then the user object is successfully created")
-    void createUserTest() {
-        String actualResult = user.realUser("Ivan", "xxx@mail.ru");
-        assertEquals("User created 'correct' 'correct'!"
-                , actualResult, "Необходимо корректно заполнить логин и e-mail");
+    @DisplayName("When the login and email address are not transmitted then the data is not set")
+   public void createUserTest() {
+        String actualResult = user.createUser("Ivan", "xxx@mail.ru");
+        assertEquals("'Ivan' 'xxx@mail.ru'",
+                actualResult, "Данные не установлены!");
     }
 
 
-    //    Когда в логин и емейл не переданы параметры, то создание пользователя не выполняется
+    //    Когда параметры в логин и е-мэйл не переданы, то объект "пользователь" не создается
     @Test
-    @DisplayName("When parameters are not passed to the login and e-mail, then the user creation is not performed.")
-    void nullUserParametersTest() {
-        String actualResult = user.realUser("Ivan", "xxx@mail.ru");
-        assertEquals("User created 'correct' 'correct'!", actualResult,
-                "Пользователь не создан! Введите корректно логин и email!");
+    @DisplayName("When the parameters in the login and e-mail are not passed" +
+            " then the 'user' object is not created")
+    public void correctUserTest() {
+        String actualResult = user.correctUser("Ivan", "xxx@mail.ru");
+        assertEquals("'Ivan' 'xxx@mail.ru'",
+                actualResult, "Пользователь не создан! Заполните поля логин и e-mail!");
     }
 
 
 
-    //    Когда e-mail содержит '@' или '.', то e-mail указан правильно
+    //    Когда e-mail не содержит '@' или '.', то выкидывается исключение
     @Test
-    @DisplayName("When the e-mail contains '@' or '.', then the e-mail is correct")
-    void correctUserEmailTest() {
-        String actualResult = user.correctEmail("xxx@mail.ru");
-        assertEquals("correct", actualResult, "Адрес заполнен не верно!");
+    @DisplayName("When e-mail does not contain '@' or '.' then exception is thrown")
+    void correctEmailTest() {
+        assertThatThrownBy(() -> user.correctEmail("xxx mail ru"))
+                .isInstanceOf(IncorrectFillingException.class);
     }
 
 
-    //    Когда логин и адрес электронной почты идентичны, то создание пользователя не выполняется
+    //    Когда логин и адрес электронной почты идентичны, то выкидывается исключение
     @Test
-    @DisplayName("When the login and email are identical, then the creation of the user is incorrect")
+    @DisplayName("When the login and email are identical, then exception is thrown")
     void loginEmailIdentity() {
-        String actualResult = user.loginEmail("yyy", "xxx@mail.ru");
-        assertEquals("correct", actualResult, "Логин и e-mail пользователя не должны совпадать!");
+        assertThatThrownBy(() -> user.loginEmail("Ivan", "Ivan"))
+                .isInstanceOf(IncorrectFillingException.class);
     }
 }
