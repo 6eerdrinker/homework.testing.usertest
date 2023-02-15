@@ -12,7 +12,7 @@ class UserTest {
 
     @BeforeEach
     void setUp() {
-        this.user = new User("null", "null");
+        this.user = new User("Ivan", "xxx@mail.ru");
     }
 
     //    Когда логин и адрес электронной почты не переданы, то данные не установлены
@@ -20,10 +20,8 @@ class UserTest {
     @DisplayName("When the login and email address are not transmitted then the data is not set")
    public void createUserTest() {
         String actualResult = user.createUser("Ivan", "xxx@mail.ru");
-        assertEquals("'Ivan' 'xxx@mail.ru'",
-                actualResult, "Данные не установлены!");
+        assertEquals("Ivan xxx@mail.ru", actualResult, "Данные не установлены!");
     }
-
 
     //    Когда параметры в логин и е-мэйл не переданы, то объект "пользователь" не создается
     @Test
@@ -31,11 +29,9 @@ class UserTest {
             " then the 'user' object is not created")
     public void correctUserTest() {
         String actualResult = user.correctUser("Ivan", "xxx@mail.ru");
-        assertEquals("'Ivan' 'xxx@mail.ru'",
+        assertEquals("Ivan xxx@mail.ru",
                 actualResult, "Пользователь не создан! Заполните поля логин и e-mail!");
     }
-
-
 
     //    Когда e-mail не содержит '@' или '.', то выкидывается исключение
     @Test
@@ -44,7 +40,6 @@ class UserTest {
         assertThatThrownBy(() -> user.correctEmail("xxx mail ru"))
                 .isInstanceOf(IncorrectFillingException.class);
     }
-
 
     //    Когда логин и адрес электронной почты идентичны, то выкидывается исключение
     @Test

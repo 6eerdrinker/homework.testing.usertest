@@ -10,23 +10,18 @@ public class User {
     }
 
     public String createUser(String login, String email) {
-        if (login != null && email != null) {
-            login = "Ivan";
-            email = "xxx@mail.ru";
-        } else {
+        if (login == null || email == null) {
             return "Data is not set";
         }
-        return "'%s' '%s'".formatted(login, email);
+        return login + " " + email;
     }
     public String correctUser(String login, String email) {
-        if (!login.isBlank()&&!login.isEmpty()
-                && !email.isBlank() &&  !email.isEmpty()) {
-            login = "Ivan";
-            email = "xxx@mail.ru";
-        }else {
-            return "Not created";}
-        return "'%s' '%s'".formatted(login, email);}
-
+        if (login.isBlank() || login.isEmpty()
+                || email.isBlank() || email.isEmpty()) {
+            return "Not created";
+        }
+        return login + " " + email;
+    }
 
     public void correctEmail(String email) {
         if (!email.contains("@") && !email.contains(".")) {
