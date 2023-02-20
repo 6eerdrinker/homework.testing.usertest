@@ -4,25 +4,22 @@ public class User {
     private String login;
     private String email;
 
+    public User(String login, String email) {
+        checkLogin(login, email);
+        checkEmail(email);
+        this.login = login;
+        this.email = email;
+        }
+
     public User() {
     }
 
-
-    public User(String login, String email) {
-        this.login = login;
-        this.email = email;
-
-        checkLogin("Ivan", "xxx@mail.ru");
-        checkEmail("xxx@mail.ru");
-        }
-
-    public String checkEmail(String email) {
+    public void checkEmail(String email) {
         if (email == null) {
             throw new IncorrectFillingException("Email must not be null");
-        } else if (!email.contains("@") || !email.contains(".") || email.isBlank()) {
+        } else if (!email.contains("@") && !email.contains(".") || email.isBlank()) {
             throw new IncorrectFillingException("Email must contain @ and ., and not be empty");
         }
-        return email;
     }
 
     public String checkLogin(String login, String email) {
@@ -41,5 +38,4 @@ public class User {
     public String getLogin() {
         return login;
     }
-
 }
